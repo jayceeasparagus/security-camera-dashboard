@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.venv/
+node_modules/
+dist/
+.env
+*.db
+events/
+esp32/secrets.h
+*.elf
+*.bin
+*.hex
+*.map
+.pytest_cache/
+.mypy_cache/
