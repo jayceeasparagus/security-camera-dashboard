@@ -82,5 +82,13 @@ class RuntimeStore:
             self._status.tilt_us = 1500
             return asdict(self._status)
 
+    async def manual(self, pan_delta_us: int, tilt_delta_us: int) -> dict[str, object]:
+        async with self._lock:
+            self._status.mode = RuntimeMode.MANUAL
+            self._status.tracking_state = TrackingState.IDLE
+            self._status.pan_us = max(800, min(2200, self._status.pan_us + pan_delta_us))
+            self._status.tilt_us = max(1200, min(2000, self._status.tilt_us + tilt_delta_us))
+            return asdict(self._status)
+
 
 runtime_store = RuntimeStore()

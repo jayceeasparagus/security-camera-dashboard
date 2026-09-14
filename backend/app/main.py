@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import asyncio
+from pathlib import Path
 from typing import Literal
 
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from .state import RuntimeMode, runtime_store
@@ -63,8 +65,7 @@ async def set_mode(request: ModeRequest) -> dict[str, object]:
 
 @app.post("/api/control/manual")
 async def manual_command(command: ManualCommand) -> dict[str, object]:
-    # Hardware dispatch will be added after the backend/device boundary is tested.
-    status = await runtime_store.set_mode(RuntimeMode.MANUAL)
+    status = await runtime_store.manual(command.pan_delta_us, command.tilt_delta_us)
     return {"accepted": True, "command": command.model_dump(), "status": status}
 
 
@@ -82,3 +83,7 @@ async def telemetry(websocket: WebSocket) -> None:
             await asyncio.sleep(0.25)
     except Exception:
         await websocket.close()
+
+
+dashboard_dir = Path(__file__).resolve().parents[2] / "frontend"
+app.mount("/dashboard", StaticFiles(directory=dashboard_dir, html=True), name="dashboard")

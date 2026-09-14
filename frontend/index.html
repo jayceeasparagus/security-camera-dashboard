@@ -1,12 +1,82 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101418">
     <title>Security Camera Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">LOCAL SECURITY SYSTEM</p>
+          <h1>Person Tracking</h1>
+        </div>
+        <div id="system-state" class="state state-idle">IDLE</div>
+      </header>
+
+      <section class="workspace">
+        <section class="video-panel panel">
+          <div class="panel-heading">
+            <span>Live camera</span>
+            <span id="video-status" class="muted">Camera offline</span>
+          </div>
+          <div class="video-frame">
+            <img id="video-feed" alt="Live security camera feed">
+            <div id="video-placeholder" class="video-placeholder">
+              <span>Camera stream will appear here</span>
+              <small>Connect the camera worker to enable live video.</small>
+            </div>
+          </div>
+        </section>
+
+        <aside class="side-panel">
+          <section class="panel-section">
+            <div class="section-heading">
+              <h2>System</h2>
+              <span id="api-status" class="muted">API connecting</span>
+            </div>
+            <div class="button-row">
+              <button id="arm-button" class="primary">Arm</button>
+              <button id="disarm-button" class="secondary">Disarm</button>
+            </div>
+            <button id="center-button" class="wide secondary">Center camera</button>
+          </section>
+
+          <section class="panel-section">
+            <h2>Manual control</h2>
+            <div class="dpad" aria-label="Manual pan and tilt controls">
+              <span></span><button data-pan="0" data-tilt="-20" title="Tilt up">Up</button><span></span>
+              <button data-pan="-20" data-tilt="0" title="Pan left">Left</button>
+              <button id="stop-button" class="stop" title="Stop manual movement">Stop</button>
+              <button data-pan="20" data-tilt="0" title="Pan right">Right</button>
+              <span></span><button data-pan="0" data-tilt="20" title="Tilt down">Down</button><span></span>
+            </div>
+          </section>
+
+          <section class="panel-section">
+            <h2>Telemetry</h2>
+            <div class="metric"><span>Mode</span><strong id="mode">DISARMED</strong></div>
+            <div class="metric"><span>Target</span><strong id="target">None</strong></div>
+            <div class="metric"><span>Confidence</span><strong id="confidence">0%</strong></div>
+            <div class="metric"><span>Image error</span><strong id="error">0, 0</strong></div>
+            <div class="metric"><span>Pan / tilt</span><strong id="position">1500 / 1500 us</strong></div>
+            <div class="metric"><span>Latency</span><strong id="latency">--</strong></div>
+          </section>
+
+          <section class="panel-section connections">
+            <h2>Connections</h2>
+            <div class="connection"><span class="dot" data-connection="camera"></span>Camera<strong id="camera-connection">Offline</strong></div>
+            <div class="connection"><span class="dot" data-connection="esp32"></span>ESP32<strong id="esp32-connection">Offline</strong></div>
+            <div class="connection"><span class="dot" data-connection="stm32"></span>STM32<strong id="stm32-connection">Offline</strong></div>
+          </section>
+        </aside>
+      </section>
+
+      <footer>Dashboard shell: live device integration is the next milestone.</footer>
+    </main>
+    <script src="app.js" defer></script>
   </body>
 </html>

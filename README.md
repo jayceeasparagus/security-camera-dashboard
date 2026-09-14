@@ -33,13 +33,9 @@ python -m pip install -r requirements.txt
 python -m uvicorn app.main:app --reload
 ```
 
-Frontend:
-
-```powershell
-cd frontend
-npm install
-npm run dev
-```
+Open `http://127.0.0.1:8000/dashboard/` after starting the backend. The
+dashboard is plain HTML, CSS, and JavaScript served by FastAPI; it has no Node,
+React, TypeScript, or frontend build step.
 
 The hardware integration is intentionally not part of this first scaffold.
 See `docs/ARCHITECTURE.md` for component ownership and implementation order.
